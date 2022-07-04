@@ -1,0 +1,145 @@
+version: '3.9'
+
+services:
+
+  discovery-server:
+    image: halfscale/discovery-server:0.0.1-SNAPSHOT
+    container_name: discovery-server
+    ports: 
+      - "8761:8761"
+    networks:
+      - my-ecommerce
+
+  ecommerce-gateway:
+    image: halfscale/ecommerce-gateway:0.0.1-SNAPSHOT
+    container_name: ecommerce-gateway
+    ports: 
+      - "8085:8085"
+    networks:
+      - my-ecommerce
+    depends_on:
+      - discovery-server
+      - rabbitmq
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: ampq://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  auth-service:
+    image: halfscale/auth-service:0.0.1-SNAPSHOT
+    container_name: auth-service
+    ports: 
+      - "8081:8081"
+    networks:
+      - my-ecommerce
+    depends_on:
+      - mysqldb8
+      - rabbitmq
+      - discovery-server
+    restart: on-failure
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: ampq://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  cart-service:
+    image: halfscale/cart-service:0.0.1-SNAPSHOT
+    container_name: cart-service
+    ports: 
+      - "8084:8084"
+    networks:
+      - my-ecommerce
+    depends_on:
+      - mysqldb8
+      - rabbitmq
+      - discovery-server
+    restart: on-failure
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: ampq://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+  
+  inventory-service:
+    image: halfscale/inventory-service:0.0.1-SNAPSHOT
+    container_name: inventory-service
+    ports: 
+      - "9095:9095"
+    networks:
+      - my-ecommerce
+    depends_on:
+      - mysqldb8
+      - rabbitmq
+      - discovery-server
+    restart: on-failure
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: ampq://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  order-service:
+    image: halfscale/order-service:0.0.1-SNAPSHOT
+    container_name: order-service
+    ports: 
+      - "9096:9096"
+    networks:
+      - my-ecommerce
+    depends_on:
+      - mysqldb8
+      - rabbitmq
+      - discovery-server
+    restart: on-failure
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: ampq://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+      
+  
+  mysqldb8:
+    image: mysql:8.0
+    container_name: mysqldb8
+    ports:
+      - "3307:3307"
+    networks:
+      - my-ecommerce
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+#      - MYSQL_DATABASE=ecommerce_user
+  
+  zipkin-server:
+    container_name: zipkin-server
+    image: openzipkin/zipkin:latest
+    mem_limit: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - my-ecommerce
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.9.13-management
+    mem_limit: 300m
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-ecommerce
+
+networks:
+  my-ecommerce:
+    external: true
