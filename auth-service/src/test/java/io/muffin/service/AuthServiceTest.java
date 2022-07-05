@@ -42,10 +42,15 @@ public class AuthServiceTest {
     private AuthService authService;
 
     @Test
-    public void test() {
+    public void testValidateUser() {
         when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(this.getUser()));
         when(modelMapper.map(Mockito.any(User.class), Mockito.eq(UserResponseDTO.class))).thenReturn(this.getUserResponseDTO());
         assertNotNull(authService.validateUser("email@gmail.com"));
+    }
+
+    @Test
+    public void testRegisterUser() {
+
     }
 
     private User getUser() {
