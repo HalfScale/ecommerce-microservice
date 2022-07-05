@@ -1,4 +1,4 @@
-package io.muffin.authservice.model.dto;
+package io.muffin.model.dto;
 
 import lombok.Data;
 

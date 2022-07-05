@@ -1,4 +1,4 @@
-package io.muffin.authservice.model;
+package io.muffin.model;
 
 import lombok.*;
 

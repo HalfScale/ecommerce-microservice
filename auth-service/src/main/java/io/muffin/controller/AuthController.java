@@ -1,17 +1,15 @@
-package io.muffin.authservice.controller;
+package io.muffin.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.muffin.authservice.model.dto.LoginRequestDTO;
-import io.muffin.authservice.model.dto.RegistrationRequestDTO;
-import io.muffin.authservice.service.UserService;
-import io.muffin.authservice.util.JwtUtil;
+import io.muffin.model.dto.LoginRequestDTO;
+import io.muffin.model.dto.RegistrationRequestDTO;
+import io.muffin.service.AuthService;
 import io.muffin.ecommercecommons.model.dto.ErrorResponseDTO;
 import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +25,25 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final ObjectMapper objectMapper;
 
     @PostMapping("/register")
     public String registerUser(@Valid @RequestBody RegistrationRequestDTO registrationRequestDTO) throws JsonProcessingException {
         log.info("register user => [{}]", objectMapper.writeValueAsString(registrationRequestDTO));
-        return userService.registerUser(registrationRequestDTO);
+        return authService.registerUser(registrationRequestDTO);
     }
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) throws JsonProcessingException {
         log.info("login => [{}]", objectMapper.writeValueAsString(loginRequestDTO));
-        return userService.login(loginRequestDTO);
+        return authService.login(loginRequestDTO);
     }
 
     @GetMapping("/validate/user/{email}")
     public UserResponseDTO validateUser(@PathVariable String email) throws InterruptedException {
         log.info("validating user email => [{}]", email);
-        return userService.validateUser(email);
+        return authService.validateUser(email);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

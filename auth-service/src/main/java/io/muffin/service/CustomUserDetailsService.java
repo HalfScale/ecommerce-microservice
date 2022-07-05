@@ -1,7 +1,7 @@
-package io.muffin.authservice.service;
+package io.muffin.service;
 
-import io.muffin.authservice.model.User;
-import io.muffin.authservice.repository.UserRepository;
+import io.muffin.model.User;
+import io.muffin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

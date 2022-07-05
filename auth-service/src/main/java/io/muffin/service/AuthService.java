@@ -1,11 +1,10 @@
-package io.muffin.authservice.service;
+package io.muffin.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.muffin.authservice.model.User;
-import io.muffin.authservice.model.dto.LoginRequestDTO;
-import io.muffin.authservice.model.dto.RegistrationRequestDTO;
-import io.muffin.authservice.repository.UserRepository;
-import io.muffin.authservice.util.JwtUtil;
+import io.muffin.model.User;
+import io.muffin.model.dto.LoginRequestDTO;
+import io.muffin.model.dto.RegistrationRequestDTO;
+import io.muffin.repository.UserRepository;
+import io.muffin.util.JwtUtil;
 import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;

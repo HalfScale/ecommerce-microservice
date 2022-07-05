@@ -1,4 +1,4 @@
-package io.muffin.authservice;
+package io.muffin;
 
 import brave.sampler.Sampler;
 import com.fasterxml.jackson.databind.ObjectMapper;
