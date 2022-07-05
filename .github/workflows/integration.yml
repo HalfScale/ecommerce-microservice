@@ -17,8 +17,6 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
-        run: mvn clean install
+      - name: install file with maven
+        run: mvn install
         working-directory: ecommerce-commons
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-        working-directory: auth-service
