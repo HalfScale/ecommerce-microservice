@@ -1,6 +1,6 @@
-package io.muffin.authservice.config;
+package io.muffin.config;
 
-import io.muffin.authservice.service.CustomUserDetailsService;
+import io.muffin.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

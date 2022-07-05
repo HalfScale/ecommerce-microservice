@@ -1,6 +1,6 @@
-package io.muffin.authservice.repository;
+package io.muffin.repository;
 
-import io.muffin.authservice.model.User;
+import io.muffin.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
