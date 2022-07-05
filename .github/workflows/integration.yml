@@ -1,6 +1,8 @@
 name: Java CI with Maven
 
 on:
+  pull_request:
+    branches: ["develop"]
   push:
     branches: [ "feature/auth-service" ]
 
@@ -17,9 +19,9 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
-      - name: install file with maven
+      - name: Install ecommerce-common dependency
         run: mvn install
         working-directory: ecommerce-commons
-      - name: build auth-service
+      - name: Build & test auth-service
         run: mvn -B package --file pom.xml
         working-directory: auth-service
