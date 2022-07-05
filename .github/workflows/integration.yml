@@ -17,6 +17,8 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
+        run: mvn clean install
+        working-directory: 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
         working-directory: auth-service
