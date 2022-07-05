@@ -1,8 +1,8 @@
 name: Java CI with Maven
 
 on:
-  pull_request:
-    branches: [ "develop" ]
+  push:
+    branches: [ "feature/auth-service" ]
 
 jobs:
   build:
@@ -20,3 +20,6 @@ jobs:
       - name: install file with maven
         run: mvn install
         working-directory: ecommerce-commons
+      - name: build auth-service
+        run: mvn -B package --file pom.xml
+        working-directory: auth-service
