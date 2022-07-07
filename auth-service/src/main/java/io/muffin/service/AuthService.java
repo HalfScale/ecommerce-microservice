@@ -1,19 +1,20 @@
 package io.muffin.service;
 
+import io.muffin.ecommercecommons.jwt.JwtUserDetails;
+import io.muffin.ecommercecommons.jwt.JwtUtil;
+import io.muffin.model.Roles;
 import io.muffin.model.User;
 import io.muffin.model.dto.LoginRequestDTO;
 import io.muffin.model.dto.RegistrationRequestDTO;
+import io.muffin.repository.RolesRepository;
 import io.muffin.repository.UserRepository;
-import io.muffin.util.JwtUtil;
-import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
+import io.muffin.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,38 +28,32 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final RolesRepository rolesRepository;
 
-    public String registerUser(RegistrationRequestDTO registrationRequestDTO) {
+    public long registerUser(RegistrationRequestDTO registrationRequestDTO) {
+        Roles role = rolesRepository.findByName(Constants.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Resource not found!"));
+
         User user = modelMapper.map(registrationRequestDTO, User.class);
         user.setPassword(encoder.encode(registrationRequestDTO.getPassword()));
+        user.setRoles(role);
         userRepository.save(user);
-        log.info("User registered successfully!");
-        return "User successfully registered";
+        log.info("REGISTRATION_SUCCESSFUL => [{}]", user.getEmail());
+        return user.getId();
     }
 
     public String login(LoginRequestDTO loginRequestDTO) {
+        // CustomUserDetailsService will be called here in authenticating
         Authentication authentication = authenticationManager
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                loginRequestDTO.getEmail(), loginRequestDTO.getPassword()
-                        )
-                );
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
 
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        log.info("username/email => [{}]", user.getUsername());
-
-        return jwtUtil.generateToken(user.getUsername());
+        JwtUserDetails user = (JwtUserDetails) authentication.getPrincipal();
+        log.info("LOGIN_USER => [{}]", user.getUsername());
+        return jwtUtil.generateToken(user);
     }
 
-    public UserResponseDTO validateUser(String email) {
-        UserResponseDTO dto = new UserResponseDTO();
-        try {
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email not existing"));
-            dto = modelMapper.map(user, UserResponseDTO.class);
-        } catch (UsernameNotFoundException ex) {
-            log.info("Error occured while validating user: [{}]", ex.getMessage());
-        }
-        return dto;
+    public boolean validateToken(String token) {
+        log.info("VALIDATE_TOKEN => {}", token);
+        return jwtUtil.validateToken(token);
     }
 }

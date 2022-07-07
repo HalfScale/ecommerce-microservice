@@ -19,4 +19,11 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Roles roles;
 }

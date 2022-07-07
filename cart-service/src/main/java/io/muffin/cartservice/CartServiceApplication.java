@@ -2,7 +2,7 @@ package io.muffin.cartservice;
 
 import brave.sampler.Sampler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.muffin.ecommercecommons.util.JwtUtil;
+import io.muffin.ecommercecommons.jwt.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

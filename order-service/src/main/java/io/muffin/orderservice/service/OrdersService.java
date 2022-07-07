@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.muffin.ecommercecommons.exception.ValidationError;
 import io.muffin.ecommercecommons.feign.RestAuthConsumer;
 import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
-import io.muffin.ecommercecommons.util.JwtUtil;
+import io.muffin.ecommercecommons.jwt.JwtUtil;
 import io.muffin.orderservice.model.OrderItems;
 import io.muffin.orderservice.model.Orders;
 import io.muffin.orderservice.model.dto.OrderItemsRequestDTO;

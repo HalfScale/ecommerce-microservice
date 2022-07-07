@@ -9,7 +9,7 @@ import io.muffin.cartservice.repository.CartItemRepository;
 import io.muffin.cartservice.repository.CartRepository;
 import io.muffin.ecommercecommons.feign.RestAuthConsumer;
 import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
-import io.muffin.ecommercecommons.util.JwtUtil;
+import io.muffin.ecommercecommons.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
