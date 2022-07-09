@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"io.muffin.cartservice", "io.muffin.ecommercecommons"})
 @EnableFeignClients(basePackages = "io.muffin.ecommercecommons.feign")
 @EnableEurekaClient
 public class CartServiceApplication {
@@ -28,11 +28,6 @@ public class CartServiceApplication {
 	@Bean
 	public Sampler simpleSampler() {
 		return Sampler.ALWAYS_SAMPLE;
-	}
-
-	@Bean
-	public JwtUtil jwtUtil() {
-		return new JwtUtil();
 	}
 
 	public static void main(String[] args) {

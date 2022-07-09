@@ -1,6 +1,7 @@
 package io.muffin.ecommercecommons.jwt;
 
 import io.jsonwebtoken.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.function.Function;
 
 @Service
 @Slf4j
+@Getter
 public class JwtUtil {
 
     private final String secret = "mySecret";
@@ -18,6 +20,14 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Long extractId(String token) {
+        return extractClaim(token, (claims) -> claims.get("id", Long.class));
+    }
+
+    public String extractTokenFromHeader(String auth) {
+        return auth.replace("Bearer ", "");
     }
 
     public Date extractExpiration(String token) {
@@ -51,11 +61,6 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
-
-//    public Boolean validateToken(String token, UserDetails userDetails) {
-//        final String username = extractUsername(token);
-//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-//    }
 
     public boolean validateToken(String token) {
         try {
