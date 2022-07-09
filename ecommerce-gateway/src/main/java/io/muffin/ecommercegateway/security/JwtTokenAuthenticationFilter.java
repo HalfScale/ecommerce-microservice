@@ -2,7 +2,9 @@ package io.muffin.ecommercegateway.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.muffin.ecommercecommons.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,8 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -56,7 +58,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
             // 4. Validate the token
             Claims claims = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtUtil.getSecret())
                     .parseClaimsJws(token)
                     .getBody();
 

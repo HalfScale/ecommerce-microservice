@@ -22,7 +22,7 @@ public class CartItem {
     private Long productId;
     @ManyToOne
     @JoinColumn(name = "cart_id")
-    private Cart cartId;
+    private Cart cart;
     private int quantity;
     private BigDecimal amount;
 }

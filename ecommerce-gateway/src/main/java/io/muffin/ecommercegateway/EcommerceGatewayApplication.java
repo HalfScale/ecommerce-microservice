@@ -7,7 +7,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"io.muffin.ecommercegateway", "io.muffin.ecommercecommons"})
 @EnableEurekaClient
 @EnableZuulProxy
 public class EcommerceGatewayApplication {

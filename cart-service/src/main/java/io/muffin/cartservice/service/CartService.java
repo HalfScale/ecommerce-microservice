@@ -2,18 +2,24 @@ package io.muffin.cartservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.muffin.cartservice.mapper.CartMapper;
 import io.muffin.cartservice.model.Cart;
 import io.muffin.cartservice.model.CartItem;
 import io.muffin.cartservice.model.dto.CartItemDTO;
+import io.muffin.cartservice.model.dto.CartResponseDTO;
 import io.muffin.cartservice.repository.CartItemRepository;
 import io.muffin.cartservice.repository.CartRepository;
+import io.muffin.ecommercecommons.exception.EcommerceException;
 import io.muffin.ecommercecommons.feign.RestAuthConsumer;
 import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
 import io.muffin.ecommercecommons.jwt.JwtUtil;
+import io.muffin.ecommercecommons.util.SystemUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,33 +28,58 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    private final RestAuthConsumer restAuthConsumer;
-    private final ModelMapper modelMapper;
+    private final CartMapper cartMapper;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
+    private final SystemUtils systemUtils;
 
-    public String addToCart(String auth, CartItemDTO cartItemDTO) throws JsonProcessingException {
-        String token = auth.replace("Bearer ", "");
-        UserResponseDTO userResponseDTO = restAuthConsumer.validateEmail(jwtUtil.extractUsername(token));
-        Cart cart = cartRepository.findByCustomerId(userResponseDTO.getId()).orElse(null);
+    public CartResponseDTO getUserCart(String token) {
+        systemUtils.validateToken(token);
+        long userId = jwtUtil.extractId(token);
+        Cart cart = cartRepository.findByCustomerId(userId)
+                .orElseThrow(() -> new EcommerceException("Cart not existing!"));
+        List<CartItem> cartItems = cartItemRepository.findAllByCart(cart);
+        return cartMapper.mapToCartResponseDTO(cart, cartItems);
+    }
 
-        CartItem cartItem = modelMapper.map(cartItemDTO, CartItem.class);
-
-        // should validate if the item that will be added to cart is still existing.
+    public long addToCart(String token, CartItemDTO cartItemDTO) throws JsonProcessingException {
+        systemUtils.validateToken(token);
+        long userId = jwtUtil.extractId(token);
+        Cart cart = cartRepository.findByCustomerId(userId).orElse(null);
+        CartItem cartItem = cartMapper.mapToCartItem(cartItemDTO, new CartItem());
 
         if (cart != null) {
-            cartItem.setCartId(cart);
-            log.info("cart item to be saved => [{}]", objectMapper.writeValueAsString(cartItem));
+            cartItem.setCart(cart);
+            log.info("ADDED_NEW_CART_ITEM => [{}]", objectMapper.writeValueAsString(cartItem));
             cartItemRepository.save(cartItem);
         } else {
             Cart newCart = new Cart();
-            newCart.setCustomerId(userResponseDTO.getId());
+            newCart.setCustomerId(userId);
             cartRepository.save(newCart);
-
-            cartItem.setCartId(newCart);
+            cartItem.setCart(newCart);
             cartItemRepository.save(cartItem);
         }
 
-        return "Item added to cart successfully!";
+        return cartItem.getId();
     }
+
+    public long editCart(String token, CartItemDTO cartItemDTO) {
+        systemUtils.validateToken(token);
+        CartItem cartItem = cartItemRepository.findById(cartItemDTO.getCartItemId())
+                .orElseThrow(() -> new EcommerceException("Cart Item not found!"));
+
+        CartItem updatedCartItem = cartMapper.mapToCartItem(cartItemDTO, cartItem);
+        cartItemRepository.save(updatedCartItem);
+
+        return cartItem.getId();
+    }
+
+    public long deleteCart(String token, long cartItemId) {
+        systemUtils.validateToken(token);
+        cartItemRepository.deleteById(cartItemId);
+        return cartItemId;
+    }
+
+
 }
