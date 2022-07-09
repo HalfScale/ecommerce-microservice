@@ -26,5 +26,5 @@ jobs:
         run: mvn -B package --file pom.xml
         working-directory: auth-service
       - name: Build & test cart-service
-      run: mvn -B package --file pom.xml
-      working-directory: cart-service
+        run: mvn -B package --file pom.xml
+        working-directory: cart-service
