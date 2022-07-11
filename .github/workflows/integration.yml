@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["develop"]
   push:
-    branches: [ "feature/cart-service" ]
+    branches: [ "feature/inventory-service" ]
 
 jobs:
   build:
@@ -28,3 +28,6 @@ jobs:
       - name: Build & test cart-service
         run: mvn -B package --file pom.xml
         working-directory: cart-service
+      - name: Build & test cart-service
+        run: mvn -B package --file pom.xml
+        working-directory: inventory-service
