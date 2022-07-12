@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   pull_request:
-    branches: ["develop"]
+    branches: ["develop", "master"]
   push:
-    branches: [ "feature/inventory-service" ]
+    branches: [ "feature/order-service" ]
 
 jobs:
   build:
@@ -28,6 +28,9 @@ jobs:
       - name: Build & test cart-service
         run: mvn -B package --file pom.xml
         working-directory: cart-service
-      - name: Build & test cart-service
+      - name: Build & test inventory-service
+        run: mvn -B package --file pom.xml
+        working-directory: inventory-service
+      - name: Build & test order-service
         run: mvn -B package --file pom.xml
         working-directory: inventory-service

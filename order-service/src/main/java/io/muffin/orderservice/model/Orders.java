@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,5 +24,5 @@ public class Orders {
     private LocalDateTime orderDate;
     private BigDecimal amount;
     private String shippingAddress;
-    private String status;
+    private int status;
 }
