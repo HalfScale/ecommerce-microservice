@@ -1,11 +1,13 @@
 package io.muffin.orderservice.model.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
-public class OrderItemsRequestDTO {
+@Getter
+@Setter
+public class OrderItemsDTO {
 
     private Long id;
     private Long productId;
