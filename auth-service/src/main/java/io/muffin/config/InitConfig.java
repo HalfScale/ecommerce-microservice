@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 // using the this config, for initializing of admin account
 @Configuration
-@Profile("!dev")
+@Profile(value = {"test", "prod"})
 public class InitConfig {
 
     @Autowired
