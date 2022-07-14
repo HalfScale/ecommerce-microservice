@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.muffin.ecommercecommons.exception.EcommerceException;
 import io.muffin.ecommercecommons.feign.InventoryFeignClient;
 import io.muffin.ecommercecommons.jwt.JwtUtil;
+import io.muffin.ecommercecommons.model.dto.ProductRequestDTO;
 import io.muffin.ecommercecommons.model.dto.ProductResponseDTO;
 import io.muffin.orderservice.model.OrderItems;
 import io.muffin.orderservice.model.Orders;
@@ -69,27 +70,27 @@ public class OrderServiceTest {
 
     @Test
     void testGetOrder() {
-        when(jwtUtil.extractTokenFromHeader(anyString())).thenReturn("token");
-        when(jwtUtil.extractId(anyString())).thenReturn(1L);
-        doReturn(Optional.of(getOrders())).when(ordersRepository).findByCustomerId(anyLong());
+        doReturn(Optional.of(getOrders())).when(ordersRepository).findById(anyLong());
         doReturn(Optional.of(getOrderItemsList())).when(orderItemsRepository).findAllByOrderId(any(Orders.class));
         doReturn(getOrderItemsDTO()).when(modelMapper).map(any(OrderItems.class), eq(OrderItemsDTO.class));
         doReturn(getOrderResponseDTO()).when(modelMapper).map(any(Orders.class), eq(OrderResponseDTO.class));
-        assertNotNull(ordersService.getOrder("some-token"));
+        assertNotNull(ordersService.getOrder(1L));
     }
 
     @Test
     void testGetOrder_ThrowsException() {
-        when(jwtUtil.extractTokenFromHeader(anyString())).thenReturn("token");
-        when(jwtUtil.extractId(anyString())).thenReturn(1L);
-        doReturn(Optional.empty()).when(ordersRepository).findByCustomerId(anyLong());
-        assertThrows(EcommerceException.class, () -> ordersService.getOrder("some-token"),
+        doReturn(Optional.empty()).when(ordersRepository).findById(anyLong());
+        assertThrows(EcommerceException.class, () -> ordersService.getOrder(1L),
                 "Order not existing!");
     }
 
     @Test
     void testCancelOrder() {
         when(ordersRepository.findById(anyLong())).thenReturn(Optional.of(getOrders()));
+        when(orderItemsRepository.findAllByOrderId(any(Orders.class))).thenReturn(Optional.of(getOrderItemsList()));
+        when(inventoryFeignClient.findProductById(anyLong())).thenReturn(getProductResponseDTO());
+        when(modelMapper.map(any(ProductResponseDTO.class), eq(ProductRequestDTO.class))).thenReturn(getProductRequestDTO());
+        when(inventoryFeignClient.updateProduct(any(ProductRequestDTO.class))).thenReturn(1L);
         when(ordersRepository.save(any(Orders.class))).thenReturn(getOrders());
         assertNotNull(ordersService.cancelOrder(1L));
     }
@@ -104,6 +105,11 @@ public class OrderServiceTest {
     private ProductResponseDTO getProductResponseDTO() {
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
         return productResponseDTO;
+    }
+
+    private ProductRequestDTO getProductRequestDTO() {
+        ProductRequestDTO productRequestDTO = new ProductRequestDTO();
+        return productRequestDTO;
     }
 
     private OrderRequestDTO getOrderRequestDTO() {
@@ -143,6 +149,7 @@ public class OrderServiceTest {
 
     private List<OrderItems> getOrderItemsList() {
         OrderItems orderItems = new OrderItems();
+        orderItems.setProductId(1L);
         return Arrays.asList(orderItems, orderItems);
     }
 

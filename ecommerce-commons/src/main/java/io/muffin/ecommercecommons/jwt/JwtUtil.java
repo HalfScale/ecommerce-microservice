@@ -3,11 +3,10 @@ package io.muffin.ecommercecommons.jwt;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -24,6 +23,10 @@ public class JwtUtil {
 
     public Long extractId(String token) {
         return extractClaim(token, (claims) -> claims.get("id", Long.class));
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthority(String token) {
+        return extractClaim(token, (claims) -> claims.get("authority", Collection.class));
     }
 
     public String extractTokenFromHeader(String auth) {
@@ -49,6 +52,7 @@ public class JwtUtil {
     public String generateToken(JwtUserDetails user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
+        claims.put("authority", user.getAuthorities());
         return createToken(claims, user.getUsername());
     }
 

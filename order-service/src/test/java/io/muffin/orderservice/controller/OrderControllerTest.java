@@ -42,8 +42,8 @@ public class OrderControllerTest {
     @Test
     void testGetOrder() throws Exception {
         OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
-        doReturn(orderResponseDTO).when(ordersService).getOrder(anyString());
-        mvc.perform(get("/order").header("authorization", "some-token"))
+        doReturn(orderResponseDTO).when(ordersService).getOrder(anyLong());
+        mvc.perform(get("/order/1").header("authorization", "some-token"))
                 .andExpect(content().json(objectMapper.writeValueAsString(orderResponseDTO)))
                 .andExpect(status().isOk());
     }
@@ -51,7 +51,7 @@ public class OrderControllerTest {
     @Test
     void testGetOrder_ThrowsError() throws Exception {
         OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
-        doThrow(EcommerceException.class).when(ordersService).getOrder(anyString());
+        doThrow(EcommerceException.class).when(ordersService).getOrder(anyLong());
         mvc.perform(get("/order").header("authorization", "some-token"))
                 .andExpect(status().isNotFound());
     }

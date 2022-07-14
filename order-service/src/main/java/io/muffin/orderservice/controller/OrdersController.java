@@ -25,10 +25,10 @@ public class OrdersController {
     private final OrdersService ordersService;
     private final ObjectMapper objectMapper;
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getOrder(@RequestHeader("authorization") String auth) {
-        log.info("GET_ORDER_AUTH => [{}]", auth);
-        return ResponseEntity.ok(ordersService.getOrder(auth));
+    @GetMapping(path = "/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getOrder(@PathVariable Long orderId) {
+        log.info("GET_ORDER_ID => [{}]", orderId);
+        return ResponseEntity.ok(ordersService.getOrder(orderId));
     }
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

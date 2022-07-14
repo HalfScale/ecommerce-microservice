@@ -1,6 +1,5 @@
 package io.muffin.cartservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.muffin.cartservice.mapper.CartMapper;
 import io.muffin.cartservice.model.Cart;
@@ -10,7 +9,6 @@ import io.muffin.cartservice.model.dto.CartResponseDTO;
 import io.muffin.cartservice.repository.CartItemRepository;
 import io.muffin.cartservice.repository.CartRepository;
 import io.muffin.ecommercecommons.exception.EcommerceException;
-import io.muffin.ecommercecommons.feign.RestAuthConsumer;
 import io.muffin.ecommercecommons.jwt.JwtUtil;
 import io.muffin.ecommercecommons.util.SystemUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +34,6 @@ public class CartServiceTest {
     private CartRepository cartRepository;
     @Mock
     private CartItemRepository cartItemRepository;
-    @Mock
-    private RestAuthConsumer restAuthConsumer;
     @Mock
     private CartMapper cartMapper;
     @Mock
