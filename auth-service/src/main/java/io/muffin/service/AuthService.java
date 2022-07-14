@@ -51,9 +51,4 @@ public class AuthService {
         log.info("LOGIN_USER => [{}]", user.getUsername());
         return jwtUtil.generateToken(user);
     }
-
-    public boolean validateToken(String token) {
-        log.info("VALIDATE_TOKEN => {}", token);
-        return jwtUtil.validateToken(token);
-    }
 }

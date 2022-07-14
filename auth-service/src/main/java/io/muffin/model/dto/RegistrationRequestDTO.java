@@ -1,6 +1,5 @@
 package io.muffin.model.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

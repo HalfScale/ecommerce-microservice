@@ -1,7 +1,6 @@
 package io.muffin.repository;
 
 import io.muffin.model.Roles;
-import io.muffin.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

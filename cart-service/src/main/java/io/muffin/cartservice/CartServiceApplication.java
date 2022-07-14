@@ -17,7 +17,7 @@ public class CartServiceApplication {
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
+		return new ObjectMapper().findAndRegisterModules();
 	}
 
 	@Bean
