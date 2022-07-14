@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -65,12 +66,18 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             String username = claims.getSubject();
 
             if(username != null) {
-
+                // mapping the authority to a List of SimpleGrantedAuthority
+                List<LinkedHashMap> jwtAuthorities = claims.get("authority", List.class);
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                jwtAuthorities.forEach(authority -> {
+                    authorities.add((new SimpleGrantedAuthority((String) authority.get("authority"))));
+                });
+                log.info("authority: {}", jwtAuthorities.get(0));
                 // 5. Create auth object
                 // UsernamePasswordAuthenticationToken: A built-in object, used by spring to represent the current authenticated / being authenticated user.
                 // It needs a list of authorities, which has type of GrantedAuthority interface, where SimpleGrantedAuthority is an implementation of that interface
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        username, null, new ArrayList<>());
+                        username, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }catch (Exception ex) {

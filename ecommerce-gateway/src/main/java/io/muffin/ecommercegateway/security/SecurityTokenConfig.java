@@ -27,6 +27,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/auth/").permitAll()
+                .antMatchers(HttpMethod.POST, "/inventory/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/inventory/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .anyRequest().authenticated();
 

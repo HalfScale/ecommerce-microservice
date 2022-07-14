@@ -10,8 +10,6 @@ import io.muffin.cartservice.model.dto.CartResponseDTO;
 import io.muffin.cartservice.repository.CartItemRepository;
 import io.muffin.cartservice.repository.CartRepository;
 import io.muffin.ecommercecommons.exception.EcommerceException;
-import io.muffin.ecommercecommons.feign.RestAuthConsumer;
-import io.muffin.ecommercecommons.model.dto.UserResponseDTO;
 import io.muffin.ecommercecommons.jwt.JwtUtil;
 import io.muffin.ecommercecommons.util.SystemUtils;
 import lombok.RequiredArgsConstructor;
