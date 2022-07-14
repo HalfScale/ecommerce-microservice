@@ -46,12 +46,6 @@ public class AuthController {
         return ResponseEntity.ok(tokenResponseDTO);
     }
 
-    @GetMapping("/validate/token/{token}")
-    public ResponseEntity<Object> validateToken(@PathVariable String token) throws InterruptedException {
-        log.info("VALIDATE_TOKEN => [{}]", token);
-        return ResponseEntity.ok(authService.validateToken(token));
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponseDTO handleValidationExceptions(

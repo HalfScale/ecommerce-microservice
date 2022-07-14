@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.muffin.ecommercecommons.exception.EcommerceException;
 import io.muffin.ecommercecommons.feign.InventoryFeignClient;
-import io.muffin.ecommercecommons.model.dto.ProductDTO;
 import io.muffin.ecommercecommons.model.dto.ProductRequestDTO;
 import io.muffin.ecommercecommons.model.dto.ProductResponseDTO;
 import io.muffin.ecommercecommons.jwt.JwtUtil;

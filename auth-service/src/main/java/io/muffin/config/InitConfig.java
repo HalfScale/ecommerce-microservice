@@ -7,11 +7,16 @@ import io.muffin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 
-//@Configuration
+// using the this config, for initializing of admin account
+@Configuration
+@Profile(value = {"test", "prod"})
 public class InitConfig {
 
     @Autowired
@@ -27,13 +32,20 @@ public class InitConfig {
 
     @PostConstruct
     public void createAdminUser() {
+        initRoleData(); // init roles
+        // create admin at the initial state of db
         User admin  = userRepository.findByEmail(adminEmail).orElse(null);
         if(admin == null) {
-            Roles role = rolesRepository.findByName("ADMIN")
-                    .orElseThrow(() -> new RuntimeException("ROLE NOT EXISTING!"));
-            User newUserAdmin = new User(-1L, "admin@gmail.com", encoder.encode(adminPassword),
+            Roles role = rolesRepository.findByName("ADMIN").orElse(null);
+            User newUserAdmin = new User(-1L, adminEmail, encoder.encode(adminPassword),
                     "System", "Administrator", role);
             userRepository.save(newUserAdmin);
         }
+    }
+
+    private void initRoleData() {
+        Roles admin = new Roles(null, "ADMIN");
+        Roles user = new Roles(null, "USER");
+        rolesRepository.saveAll(Arrays.asList(admin, user));
     }
 }
