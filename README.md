@@ -27,7 +27,7 @@ Is a simple ecommerce app using Spring Boot in a microservice architecture.\
 - To create an ecommerce app in a microservice architecture using Spring Boot.
 - To deploy the application in a containerize fashion using Docker. Using a docker compose script.
 - To familiarize more and increase knowledge with regards to a microservice architecture.
-- To practice TDD and usang of CI tools (Used Github Actions for this project).
+- To practice TDD and usage of CI tools (Used Github Actions for this project).
 
 ## Technologies and Tools
 **Language:** Java\
