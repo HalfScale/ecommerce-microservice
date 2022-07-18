@@ -1,14 +1,8 @@
 package io.muffin.inventoryservice.model.dto;
 
-import lombok.Data;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class ProductResponseDTO {
-    private Long id;
-    private String name;
-    private String description;
-    private int stock;
-    private BigDecimal price;
+public class ProductResponseDTO extends ProductDTO {
 }
