@@ -48,5 +48,5 @@ docker compose up
   
 ## Diagrams
 ### System Architecture
-<img src="./img/ecommerce-microservice.png" width="600" height="600">
+<img src="./img/ecommerce-microservice.png" width="954" height="768">
 
