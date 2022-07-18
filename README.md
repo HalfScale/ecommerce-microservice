@@ -22,7 +22,6 @@ Is a simple ecommerce app using Spring Boot in a microservice architecture.\
 - [How to run the app](#how-to-run-the-app)
 - [Diagrams](#diagrams)
   - [System Architecture](#system-architecture)
-- [Postman Request](#screenshots)
 
 ## Objective
 - To create an ecommerce app in a microservice architecture using Spring Boot.
@@ -45,9 +44,9 @@ docker compose up
   - Use this credentials to enter RabbitMQ console. user: `guest` password: `guest`
 - To access Zipkin
   - Go to `http://localhost:9411/zipkin/`. To check the visualization of requests
+- Import postman request [located here](./postman-requests/e-commerce-postman-request-collection.json). To start sending request to the app.
   
 ## Diagrams
 ### System Architecture
-
-## Postman Request
+<img src="./img/ecommerce-microservice.png" width="600" height="600">
 

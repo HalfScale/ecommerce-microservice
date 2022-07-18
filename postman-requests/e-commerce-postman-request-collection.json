@@ -1,0 +1,917 @@
+{
+	"info": {
+		"_postman_id": "fe7c62ad-6da2-428d-86c9-1c345c91bad5",
+		"name": "E-commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11330182"
+	},
+	"item": [
+		{
+			"name": "Using Ecommerce Gateway",
+			"item": [
+				{
+					"name": "auth-service",
+					"item": [
+						{
+							"name": "Register User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"juan\",\r\n    \"lastName\": \"gomez\",\r\n    \"email\": \"juangomez@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cart-service",
+					"item": [
+						{
+							"name": "Get Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRob3JpdHkiOlt7ImF1dGhvcml0eSI6IkFETUlOIn1dLCJpZCI6MSwiZXhwIjoxNjU4MjEzNzkyLCJpYXQiOjE2NTgxMjczOTJ9.Pmt_Kk7AiiJoM4jMPfVAARniJZvgIkFt98Qhsc7grNY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/cart",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Item To Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": 1,\r\n    \"quantity\": 2,\r\n    \"amount\": 100000\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/cart/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cart",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cartItemId\": 1,\r\n    \"productId\": 1,\r\n    \"quantity\": 1,\r\n    \"amount\": 50000\r\n\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/cart/edit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cart",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete item from cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cartItemId\": 8,\r\n    \"productId\": 13,\r\n    \"quantity\": 4,\r\n    \"amount\": 32000\r\n\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/cart/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cart",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "inventory-service",
+					"item": [
+						{
+							"name": "Find product by ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODc0OTkzLCJpYXQiOjE2NTc3ODg1OTN9.6yzJTizpw3zQSbAVd02JQPphyLCgJVGOT-0iIZpv7kc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/inventory/product/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"inventory",
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODc0OTkzLCJpYXQiOjE2NTc3ODg1OTN9.6yzJTizpw3zQSbAVd02JQPphyLCgJVGOT-0iIZpv7kc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"1\",\r\n    \"name\": \"Samsung S23\",\r\n    \"description\": \"Samsung S23 - Sale\",\r\n    \"stock\": \"15\",\r\n    \"price\": \"50000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/inventory/product/edit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"inventory",
+										"product",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRob3JpdHkiOlt7ImF1dGhvcml0eSI6IkFETUlOIn1dLCJpZCI6MSwiZXhwIjoxNjU3ODc0NjQ2LCJpYXQiOjE2NTc3ODgyNDZ9.pkYm7i9GedcDBqsAbr8tpsdSERO_ZXSPbKObuyJ1JqY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Samsung S23\",\r\n    \"description\": \"Samsung S22 - Sale\",\r\n    \"stock\": \"10\",\r\n    \"price\": \"46000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/inventory/product/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"inventory",
+										"product",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODc0OTkzLCJpYXQiOjE2NTc3ODg1OTN9.6yzJTizpw3zQSbAVd02JQPphyLCgJVGOT-0iIZpv7kc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/inventory/product/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"inventory",
+										"product",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order-service",
+					"item": [
+						{
+							"name": "Place order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n    \"customerId\": \"2\",\r\n    \"amount\": \"50000\",\r\n    \"shippingAddress\": \"Cavite City\",\r\n    \"orderItems\": [\r\n        {\r\n            \"productId\": \"1\",\r\n            \"price\": \"50000\",\r\n            \"quantity\": \"1\"\r\n        }\r\n    ]\r\n }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8085/order/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"order",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel order Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9096/order/cancel/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9096",
+									"path": [
+										"order",
+										"cancel",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get order by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuZ29tZXpAZ21haWwuY29tIiwiYXV0aG9yaXR5IjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpZCI6MiwiZXhwIjoxNjU3ODg3NTkwLCJpYXQiOjE2NTc4MDExOTB9.0Hnqx4_xsIaAmsnCqZR0BryDmIdL8uSDaJYeqnauui0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/order/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"order",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "This is the proper way of interacting of the application. Use this requests, to send request to the API gateway, so that it can route to your requested resource."
+		},
+		{
+			"name": "Direct Service Request",
+			"item": [
+				{
+					"name": "auth-service",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"janedoe@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"janedoe@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cart-service",
+					"item": [
+						{
+							"name": "Get cart by current user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc0Mzk0NjQsImlhdCI6MTY1NzM1MzA2NH0.N7Op0l0N2rA6qHru_FG2xZpOGgFudtaVAXk-v6F8V08",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8084/cart",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8084",
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add item to cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc0Mzk0NjQsImlhdCI6MTY1NzM1MzA2NH0.N7Op0l0N2rA6qHru_FG2xZpOGgFudtaVAXk-v6F8V08",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": \"1\",\r\n    \"quantity\": \"6\",\r\n    \"amount\": \"48000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8084/cart/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8084",
+									"path": [
+										"cart",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit item",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc0Mzk0NjQsImlhdCI6MTY1NzM1MzA2NH0.N7Op0l0N2rA6qHru_FG2xZpOGgFudtaVAXk-v6F8V08",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cartItemId\": \"4\",\r\n    \"productId\": \"1\",\r\n    \"quantity\": \"4\",\r\n    \"amount\": \"32000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8084/cart/edit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8084",
+									"path": [
+										"cart",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete item from cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc0Mzk0NjQsImlhdCI6MTY1NzM1MzA2NH0.N7Op0l0N2rA6qHru_FG2xZpOGgFudtaVAXk-v6F8V08",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8084/cart/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8084",
+									"path": [
+										"cart",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order-service",
+					"item": [
+						{
+							"name": "Get user order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc3MTEzNjUsImlhdCI6MTY1NzYyNDk2NX0.7f-6AdCj6jilpP4-iWjP53WkBA0_d1DI3ydwKuquSAo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9096/order",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9096",
+									"path": [
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Place order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc3MTEzNjUsImlhdCI6MTY1NzYyNDk2NX0.7f-6AdCj6jilpP4-iWjP53WkBA0_d1DI3ydwKuquSAo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n    \"customerId\": \"2\",\r\n    \"amount\": \"50000\",\r\n    \"shippingAddress\": \"Cavite City\",\r\n    \"orderItems\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"productId\": \"13\",\r\n            \"price\": \"100000\",\r\n            \"quantity\": \"9\"\r\n        }\r\n    ]\r\n }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9096/order/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9096",
+									"path": [
+										"order",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lZG9lQGdtYWlsLmNvbSIsImlkIjoyLCJleHAiOjE2NTc3MTEzNjUsImlhdCI6MTY1NzYyNDk2NX0.7f-6AdCj6jilpP4-iWjP53WkBA0_d1DI3ydwKuquSAo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9096/order/cancel/18",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9096",
+									"path": [
+										"order",
+										"cancel",
+										"18"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "inventory-service",
+					"item": [
+						{
+							"name": "Create product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Samsung S22\",\r\n    \"description\": \"Samsung S22 - Sale\",\r\n    \"stock\": \"2\",\r\n    \"price\": \"46000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9095/inventory/product/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9095",
+									"path": [
+										"inventory",
+										"product",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find product by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9095/inventory/product/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9095",
+									"path": [
+										"inventory",
+										"product",
+										"13"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit product",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"13\",\r\n    \"name\": \"Samsung S23\",\r\n    \"description\": \"Samsung S23 - Sale\",\r\n    \"stock\": \"5\",\r\n    \"price\": \"50000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9095/inventory/product/edit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9095",
+									"path": [
+										"inventory",
+										"product",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete product by id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"12\",\r\n    \"name\": \"Samsung S23\",\r\n    \"description\": \"Samsung S23 - Sale\",\r\n    \"stock\": \"5\",\r\n    \"price\": \"50000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9095/inventory/product/delete/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9095",
+									"path": [
+										"inventory",
+										"product",
+										"delete",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Only use this if you want to test endpoints without the need of the API gateway."
+		}
+	]
+}
