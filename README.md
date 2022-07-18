@@ -27,12 +27,14 @@ Is a simple ecommerce app using Spring Boot in a microservice architecture.\
 - To create an ecommerce app in a microservice architecture using Spring Boot.
 - To deploy the application in a containerize fashion using Docker. Using a docker compose script.
 - To familiarize more and increase knowledge with regards to a microservice architecture.
+- To practice TDD and usang of CI tools (Used Github Actions for this project).
 
 ## Technologies and Tools
 **Language:** Java\
 **Libraries and frameworks:** Spring Boot, Spring Cloud, Feign Client, Zuul Proxy Gateway, Spring Data JPA, Sleuth\
 **Tools:** Postman, Zipkin (For distributed tracing) and RabbitMQ (For persisting messages) and Docker (Containerization)\
 **Test:** Junit and Mockito
+**C/I (Continous Integration)**: Github Actions
 
 ## How to run the app
 - Navigate to the root directory of the project. then execute this command. (Please check if docker daemon is up and running). *I'm expecting you have a docker installed in your local.*
