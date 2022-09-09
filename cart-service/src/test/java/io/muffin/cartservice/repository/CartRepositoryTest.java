@@ -13,8 +13,11 @@ public class CartRepositoryTest {
     private CartRepository cartRepository;
 
     @Test
-    void test() {
-        Cart cart = new Cart(null, 1L);
+    void test_addCart() {
+        Cart cart = Cart.builder()
+                .id(null)
+                .customerId(1L)
+                .build();
         cartRepository.save(cart);
         cartRepository.findByCustomerId(1L).get();
         Assertions.assertEquals(cartRepository.findByCustomerId(1L).get(), cart);

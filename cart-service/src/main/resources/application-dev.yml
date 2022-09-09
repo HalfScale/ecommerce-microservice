@@ -18,6 +18,9 @@ spring:
 server:
   port: 8084
 
+kafka:
+  bootstrapAddress: http://localhost:9092
+
 eureka:
   client:
     registerWithEureka: true

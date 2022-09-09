@@ -1,9 +1,6 @@
 package io.muffin.cartservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "cart_item")
 public class CartItem {
 
@@ -24,5 +22,5 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
     private int quantity;
-    private BigDecimal amount;
+    private BigDecimal price;
 }
