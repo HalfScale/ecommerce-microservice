@@ -14,10 +14,9 @@ import io.muffin.ecommercecommons.jwt.JwtUtil;
 import io.muffin.ecommercecommons.util.SystemUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,23 +27,25 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final CartMapper cartMapper;
     private final ObjectMapper objectMapper;
-    private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
     private final SystemUtils systemUtils;
+//    private final KafkaSenderService kafkaSenderService;
 
-    public CartResponseDTO getUserCart(String token) {
+
+    public CartResponseDTO getUserCart(String token, Pageable pageable) {
         systemUtils.validateToken(token);
         long userId = jwtUtil.extractId(token);
         Cart cart = cartRepository.findByCustomerId(userId)
                 .orElseThrow(() -> new EcommerceException("Cart not existing!"));
-        List<CartItem> cartItems = cartItemRepository.findAllByCart(cart);
+        Page<CartItem> cartItems = cartItemRepository.findAllPagedByCart(pageable, cart);
         return cartMapper.mapToCartResponseDTO(cart, cartItems);
     }
 
     public long addToCart(String token, CartItemDTO cartItemDTO) throws JsonProcessingException {
         systemUtils.validateToken(token);
         long userId = jwtUtil.extractId(token);
-        Cart cart = cartRepository.findByCustomerId(userId).orElse(null);
+        Cart cart = cartRepository.findByCustomerId(userId)
+                .orElse(null);
         CartItem cartItem = cartMapper.mapToCartItem(cartItemDTO, new CartItem());
 
         if (cart != null) {
@@ -58,7 +59,6 @@ public class CartService {
             cartItem.setCart(newCart);
             cartItemRepository.save(cartItem);
         }
-
         return cartItem.getId();
     }
 
@@ -69,12 +69,13 @@ public class CartService {
 
         CartItem updatedCartItem = cartMapper.mapToCartItem(cartItemDTO, cartItem);
         cartItemRepository.save(updatedCartItem);
-
         return cartItem.getId();
     }
 
     public long deleteCart(String token, long cartItemId) {
         systemUtils.validateToken(token);
+        cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new EcommerceException("Cart Item not found!"));
         cartItemRepository.deleteById(cartItemId);
         return cartItemId;
     }

@@ -9,10 +9,12 @@ import io.muffin.ecommercecommons.jwt.JwtUtil;
 import io.muffin.ecommercecommons.model.dto.ErrorResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.time.LocalDateTime;
 
@@ -27,13 +29,15 @@ public class CartController {
     private final ObjectMapper objectMapper;
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getUserCart(@RequestHeader("authorization") String auth) {
+    public ResponseEntity<Object> getUserCart(@RequestHeader("authorization") String auth,
+                                              Pageable pageable) {
+        log.info("Session ID: [{}]", RequestContextHolder.currentRequestAttributes().getSessionId());
         String token = jwtUtil.extractTokenFromHeader(auth);
         log.info("GET_CART => [{}]", token);
-        return ResponseEntity.ok(cartService.getUserCart(token));
+        return ResponseEntity.ok(cartService.getUserCart(token, pageable));
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addToCart(@RequestHeader("authorization") String auth,
                             @RequestBody CartItemDTO cartItemDTO) throws JsonProcessingException {
         String token = jwtUtil.extractTokenFromHeader(auth);

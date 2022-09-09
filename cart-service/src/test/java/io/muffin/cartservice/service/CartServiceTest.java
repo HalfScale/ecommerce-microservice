@@ -17,10 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,8 +40,6 @@ public class CartServiceTest {
     @Mock
     private ObjectMapper objectMapper;
     @Mock
-    private ModelMapper modelMapper;
-    @Mock
     private JwtUtil jwtUtil;
     @Mock
     private SystemUtils systemUtils;
@@ -49,18 +48,28 @@ public class CartServiceTest {
     private CartService cartService;
 
     @Test
-    void testGetUserCart() {
-        List<CartItem> cartItems = getCartItems();
+    void test_getUserCart() {
+        Page<CartItem> cartItems = getCartItems();
         when(systemUtils.validateToken(anyString())).thenReturn(true);
         when(jwtUtil.extractId(any())).thenReturn(1L);
         when(cartRepository.findByCustomerId(anyLong())).thenReturn(Optional.of(getCart()));
-        when(cartItemRepository.findAllByCart(any(Cart.class))).thenReturn(cartItems);
+        when(cartItemRepository.findAllPagedByCart(any(Pageable.class), any(Cart.class))).thenReturn(cartItems);
         when(cartMapper.mapToCartResponseDTO(any(Cart.class), eq(cartItems))).thenReturn(getCartResponseDTO());
-        assertNotNull(cartService.getUserCart("some-jwt-token"));
+        assertNotNull(cartService.getUserCart("some-jwt-token",Pageable.ofSize(1)));
     }
 
     @Test
-    void testAddToCart_CreatingNewCart() throws Exception {
+    void test_getUserCart_throwsException_CartNotExisting() {
+        Page<CartItem> cartItems = getCartItems();
+        when(systemUtils.validateToken(anyString())).thenReturn(true);
+        when(jwtUtil.extractId(any())).thenReturn(1L);
+        when(cartRepository.findByCustomerId(anyLong())).thenReturn(Optional.empty());
+        assertThrows(EcommerceException.class, () -> cartService.getUserCart("some-jwt-token",Pageable.ofSize(1)),
+                "Cart not existing!");
+    }
+
+    @Test
+    void test_addToCart_noCart() throws Exception {
         when(systemUtils.validateToken(anyString())).thenReturn(true);
         when(jwtUtil.extractId(anyString())).thenReturn(1L);
         when(cartRepository.findByCustomerId(anyLong())).thenReturn(Optional.empty());
@@ -71,17 +80,18 @@ public class CartServiceTest {
     }
 
     @Test
-    void testAddToCart_ExistingCart() throws Exception {
+    void test_addToCart_existingCart() throws Exception {
         when(systemUtils.validateToken(anyString())).thenReturn(true);
         when(jwtUtil.extractId(anyString())).thenReturn(1L);
         when(cartRepository.findByCustomerId(anyLong())).thenReturn(Optional.of(getCart()));
         when(cartMapper.mapToCartItem(any(CartItemDTO.class), any(CartItem.class))).thenReturn(getCartItem());
+        when(objectMapper.writeValueAsString(any(CartItem.class))).thenReturn("objectToString");
         when(cartItemRepository.save(any(CartItem.class))).thenReturn(getCartItem());
         assertNotNull(cartService.addToCart("some-token", getCartItemDTO()));
     }
 
     @Test
-    void editCart_Success() {
+    void test_editCart() {
         CartItem cartItem = getCartItem();
         when(systemUtils.validateToken(anyString())).thenReturn(true);
         when(cartItemRepository.findById(anyLong())).thenReturn(Optional.of(cartItem));
@@ -91,33 +101,49 @@ public class CartServiceTest {
     }
 
     @Test
-    void editCart_ThrowsException() {
+    void test_editCart_throwsException_cartItemNotFound() {
         when(systemUtils.validateToken(anyString())).thenReturn(true);
         when(cartItemRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(EcommerceException.class, () -> cartService.editCart("some-token", getCartItemDTO()),
                 "Cart Item not found!");
     }
 
+    @Test
+    void test_deleteCart() {
+        CartItem cartItem = getCartItem();
+        when(systemUtils.validateToken(anyString())).thenReturn(true);
+        when(cartItemRepository.findById(anyLong())).thenReturn(Optional.of(cartItem));
+        doNothing().when(cartItemRepository).deleteById(anyLong());
+        assertEquals(cartItem.getId(), cartService.deleteCart("some-token", cartItem.getId()));
+    }
+
+    @Test
+    void test_deleteCart_throwsException_cartItemNotFound() {
+        CartItem cartItem = getCartItem();
+        when(systemUtils.validateToken(anyString())).thenReturn(true);
+        when(cartItemRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(EcommerceException.class, () -> cartService.deleteCart("some-token", cartItem.getId()),
+                "Cart Item not found!");
+    }
+
     private Cart getCart() {
-        Cart cart = new Cart();
-        return cart;
+        return Cart.builder().build();
     }
 
     private CartItemDTO getCartItemDTO() {
-        return new CartItemDTO();
+        return CartItemDTO.builder().build();
     }
 
-    private List<CartItem> getCartItems() {
-        return Arrays.asList(getCartItem());
+    private Page<CartItem> getCartItems() {
+        return new PageImpl(Arrays.asList(getCartItem()));
     }
 
     private CartItem getCartItem() {
-        CartItem cartItem = new CartItem();
-        cartItem.setId(1L);
-        return cartItem;
+        return CartItem.builder()
+                .id(1L).build();
     }
 
     private CartResponseDTO getCartResponseDTO() {
-        return new CartResponseDTO();
+        return CartResponseDTO.builder().build();
     }
 }

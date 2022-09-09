@@ -5,40 +5,42 @@ import io.muffin.cartservice.model.CartItem;
 import io.muffin.cartservice.model.dto.CartItemDTO;
 import io.muffin.cartservice.model.dto.CartResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CartMapper {
 
-    public CartResponseDTO mapToCartResponseDTO(Cart cart, List<CartItem> cartItems) {
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        List<CartItemDTO> cartItemDTOS = new ArrayList<>();
-        CartResponseDTO cartResponseDTO = new CartResponseDTO();
+    public CartResponseDTO mapToCartResponseDTO(Cart cart, Page<CartItem> cartItems) {
+        CartResponseDTO cartResponseDTO = CartResponseDTO.builder().build();
         cartResponseDTO.setCartId(cart.getId());
 
-        for (CartItem cartItem : cartItems) {
-            CartItemDTO cartItemDTO = new CartItemDTO();
-            totalAmount = totalAmount.add(cartItem.getAmount());
-            cartItemDTO.setCartItemId(cartItem.getId());
-            cartItemDTO.setAmount(cartItem.getAmount());
-            cartItemDTO.setProductId(cartItem.getProductId());
-            cartItemDTO.setQuantity(cartItem.getQuantity());
+        List<CartItemDTO> cartItemDTOS = new ArrayList<>();
+        cartItems.stream().forEach(ci -> {
+            CartItemDTO cartItemDTO = CartItemDTO
+                    .builder()
+                    .cartItemId(ci.getId())
+                    .price(ci.getPrice())
+                    .productId(ci.getProductId())
+                    .quantity(ci.getQuantity())
+                    .build();
             cartItemDTOS.add(cartItemDTO);
-        }
+        });
+
         cartResponseDTO.setCartItems(cartItemDTOS);
-        cartResponseDTO.setTotalAmount(totalAmount);
         return cartResponseDTO;
     }
 
     public CartItem mapToCartItem(CartItemDTO cartItemDTO, CartItem cartItem) {
         cartItem.setProductId(cartItemDTO.getProductId());
         cartItem.setQuantity(cartItemDTO.getQuantity());
-        cartItem.setAmount(cartItemDTO.getAmount());
+        cartItem.setPrice(cartItemDTO.getPrice());
         return cartItem;
     }
 }

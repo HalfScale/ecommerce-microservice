@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -35,7 +36,7 @@ public class CartControllerTest {
     void testGetUserCart() throws Exception {
         CartResponseDTO cartResponseDTO = getCartResponseDTO();
         when(jwtUtil.extractTokenFromHeader(anyString())).thenReturn("the-token");
-        when(cartService.getUserCart(anyString())).thenReturn(cartResponseDTO);
+        when(cartService.getUserCart(anyString(), any(Pageable.class))).thenReturn(cartResponseDTO);
         mvc.perform(get("/cart").header("authorization", "some-token"))
                 .andExpect(content().json(objectMapper.writeValueAsString(cartResponseDTO)))
                 .andExpect(status().isOk());
@@ -45,7 +46,7 @@ public class CartControllerTest {
     void testAddToCart() throws Exception {
         CartItemDTO cartItemDTO = getCartItemDTO();
         when(jwtUtil.extractTokenFromHeader(anyString())).thenReturn("the-token");
-        when(cartService.addToCart(anyString(), eq(cartItemDTO))).thenReturn(1L);
+        when(cartService.addToCart(anyString(), any(CartItemDTO.class))).thenReturn(1L);
         mvc.perform(post("/cart/add")
                         .header("authorization", "some-token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -59,7 +60,7 @@ public class CartControllerTest {
     void testEditCart() throws Exception {
         CartItemDTO cartItemDTO = getCartItemDTO();
         when(jwtUtil.extractTokenFromHeader(anyString())).thenReturn("the-token");
-        when(cartService.editCart(anyString(), eq(cartItemDTO))).thenReturn(1L);
+        when(cartService.editCart(anyString(), any(CartItemDTO.class))).thenReturn(1L);
         String loginJson = "{\"email\":\"user@email.com\",\"password\":\"password\"}";
         mvc.perform(put("/cart/edit")
                         .header("authorization", "some-token")
@@ -80,11 +81,12 @@ public class CartControllerTest {
     }
 
     private CartResponseDTO getCartResponseDTO() {
-        return new CartResponseDTO();
+        return CartResponseDTO.builder().build();
     }
 
     private CartItemDTO getCartItemDTO() {
-        return new CartItemDTO();
+        return CartItemDTO.builder()
+                .cartItemId(1).build();
     }
 
 }
